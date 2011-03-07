@@ -28,6 +28,8 @@ jquery.scanner.js - a nifty barcode scanning framework
 
 		$(toplevel).keypress(function(e){
 			if (!scanning && e.which == startKey) {
+				// clear buffer
+				scan_buf = '';
 				// start capturing
 				scanning = true;
 				// prevent startKey output
@@ -39,8 +41,6 @@ jquery.scanner.js - a nifty barcode scanning framework
 					scanning = false;
 					// invoke parser
 					var scanData = opts.parser(scan_buf);
-					// clear buffer
-					scan_buf = '';
 					// normalize top-level scannable node
 					if (/html|body/i.test(e.target.nodeName)) {
 						e.target = toplevel;
