@@ -13,6 +13,7 @@ jquery.scanner.js - a nifty barcode scanning framework
 				endKey: "\r",
 				// scanned string parser (gets handed string with start/end indicators stripped)
 				parser: function(scanStr){return scanStr;},
+				contexts: {},
 				scanBeep: null,
 				preventOutput: true
 			}, options),
@@ -23,6 +24,7 @@ jquery.scanner.js - a nifty barcode scanning framework
 			endKey = typeof opts.endKey == "string" ? opts.endKey.charCodeAt(0) : opts.endKey;
 
 			opts.scanBeep = opts.scanBeep && !!(document.createElement('audio').canPlayType) ? new Audio(opts.scanBeep) : null;
+			opts.contexts.global = function(targEl){return targEl === toplevel;}
 
 		$(toplevel).keypress(function(e){
 			if (!scanning && e.which == startKey) {
@@ -43,8 +45,16 @@ jquery.scanner.js - a nifty barcode scanning framework
 					if (/html|body/i.test(e.target.nodeName)) {
 						e.target = toplevel;
 					}
+					// assert/classify scan context from target element
+					var ctxName = null;
+					$.each(opts.contexts, function(name, assertFn){
+						if (assertFn(e.target)) {
+							ctxName = name;
+							return false;
+						}
+					});
 					// trigger scan event
-					$(e.target).trigger('scan', [scanData]);
+					$(e.target).trigger('scan', [scanData, ctxName]);
 					// play scan beep if provided
 					opts.scanBeep && opts.scanBeep.play();
 					// prevent endKey output
