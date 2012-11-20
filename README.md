@@ -18,11 +18,11 @@ This framework is a somewhat different from other JS barcode scanning frameworks
 ```js
 // all options with defaults
 $.scanner({
-	startKey: "|",							// default scan-start indicator
-	endKey: "\r",							// default scan-end indicator
-	parser: (scanStr){return scanStr;},		// default basic parser. returned data will be passed to "scan" event's handlers
-	scanBeep: null,							// path to an optional scan beep sound to play via HTML5 audio (if present)
-	preventOutput: true						// default behavior is to prevent output of scans
+	startKey: "|",                               // default scan-start indicator
+	endKey: "\r",                                // default scan-end indicator
+	parser: function(scanStr){return scanStr;},  // default basic parser. returned data will be passed to "scan" event's handlers
+	scanBeep: null,                              // path to an optional scan beep sound to play via HTML5 audio (if present)
+	preventOutput: true                          // default behavior is to prevent output of scans
 });
 ```
 
